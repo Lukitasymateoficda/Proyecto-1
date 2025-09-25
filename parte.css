@@ -8,8 +8,13 @@ h2{
 h3{
     color:blueviolet;
 }
+header{
+    color:white;
+    text-align: center;
+    background-color: cadetblue; 
+}
 body{font-family: 'Segoe UI', sans-serif;
-     background-color: rgb(250, 180, 100); 
+     background-color: rgb(250, 180, 15); 
 }
 
 nav{background-color: rgb(236, 234, 107);
@@ -22,6 +27,7 @@ nav{background-color: rgb(236, 234, 107);
 
 
 aside{
+    color: white;
     background-color: blue;
     padding: 1rem;
     border-left: 10px burlywood;
