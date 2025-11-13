@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="parte.css">
     <title>Document</title>
+    <style>
+        .modal {
+         display: none; /* oculto hasta abrir */
+         position: fixed;
+         left: 0; top: 0;
+         width: 100%; height: 100%;
+         background-color: rgba(0,0,0,0.5);
+         z-index: 1000;
+        }
+        .modal-contenido {
+         background: white;
+         margin: 5% auto;
+         padding: 20px;
+         border-radius: 10px;
+         max-width: 600px;
+         max-height: 80vh;
+         overflow-y: auto;
+        }
+        .cerrar { float: right; cursor: pointer; font-size: 24px; }
+        </style>
 </head>
 <body>
     <nav>
@@ -56,6 +76,97 @@
             <p>https://es.catholic.net/op/articulos/35762/alfredo-parte-beato.html</p>
                 <p>https://calendariodesantos.com/santoral/diciembre/27/beato-alfredo-parte</p>
         </footer>
-        
+        <!-- SECCIÓN PARA JUGAR TRIVIA -->
+        <section id="jugar-trivia">
+            <h2>¿Te animas a poner a prueba tus conocimientos sobre el Beato Alfredo Parte?</h2>
+            <button id="abrirTrivia">Comenzar Trivia</button>
+          </section>
+          
+          <!-- MODAL -->
+          <div id="modalTrivia" style="display:none; position:fixed; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000;">
+           <div style="background:white; margin:5% auto; padding:20px; border-radius:10px; max-width:600px; max-height:80vh; overflow-y:auto;">
+             <span class="cerrar" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+          
+             <h2>Trivia sobre el Beato Alfredo Parte</h2>
+             <form id="formTrivia">
+               <p><strong>1.</strong> ¿Dónde nació el Beato Alfredo Parte?</p>
+               <label><input type="radio" name="p1" value="Villacarriedo"> Villacarriedo</label><br>
+               <label><input type="radio" name="p1" value="Santander"> Santander</label><br>
+               <label><input type="radio" name="p1" value="Cilleruelo de Bricia, Burgos"> Cilleruelo de Bricia, Burgos</label><br><br>
+          
+               <p><strong>2.</strong> ¿A qué orden religiosa pertenecía Alfredo Parte?</p>
+               <label><input type="radio" name="p2" value="Franciscanos"> Franciscanos</label><br>
+               <label><input type="radio" name="p2" value="Escolapios"> Escolapios (Escuelas Pías)</label><br>
+               <label><input type="radio" name="p2" value="Jesuitas"> Jesuitas</label><br><br>
+          
+               <p><strong>3.</strong> ¿Cómo se descubrió que era sacerdote cuando fue apresado?</p>
+               <label><input type="radio" name="p3" value="Por sus documentos religiosos"> Por sus documentos religiosos</label><br>
+               <label><input type="radio" name="p3" value="Lo confesó él mismo en voz alta"> Lo confesó él mismo en voz alta</label><br>
+               <label><input type="radio" name="p3" value="Lo delató un compañero"> Lo delató un compañero</label><br><br>
+          
+               <p><strong>4.</strong> ¿Qué respondió cuando los milicianos quisieron ayudarle a subir al barco?</p>
+               <label><input type="radio" name="p4" value="Dios me ayudará"> Dios me ayudará</label><br>
+               <label><input type="radio" name="p4" value="Hasta ahora he necesitado bastón, pero para subir hacia Dios no lo necesito"> Hasta ahora he necesitado bastón, pero para subir hacia Dios no lo necesito</label><br>
+               <label><input type="radio" name="p4" value="No necesito ayuda de quienes me odian"> No necesito ayuda de quienes me odian</label><br><br>
+          
+               <p><strong>5.</strong> ¿Cuándo se celebra su festividad?</p>
+               <label><input type="radio" name="p5" value="1 de octubre"> 1 de octubre</label><br>
+               <label><input type="radio" name="p5" value="27 de diciembre"> 27 de diciembre</label><br>
+               <label><input type="radio" name="p5" value="25 de diciembre"> 25 de diciembre</label><br><br>
+          
+               <button type="submit">Enviar respuestas</button>
+             </form>
+          
+             <div id="resultado"></div>
+           </div>
+          </div>
+          
+          <!-- SCRIPT: abrir/cerrar el modal y lógica -->
+          <script>
+          // Abrir y cerrar modal
+          const modal = document.getElementById("modalTrivia");
+          const btnAbrir = document.getElementById("abrirTrivia");
+          const btnCerrar = document.querySelector(".cerrar");
+          
+          btnAbrir.onclick = () => { modal.style.display = "block"; };
+          btnCerrar.onclick = () => { modal.style.display = "none"; };
+          window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+          
+          // Lógica de la trivia
+          document.getElementById("formTrivia").addEventListener("submit", function(e) {
+           e.preventDefault();
+           let puntaje = 0;
+           let salida = "";
+          
+           const respuestas = {
+             p1: "Cilleruelo de Bricia, Burgos",
+             p2: "Escolapios",
+             p3: "Lo confesó él mismo en voz alta",
+             p4: "Hasta ahora he necesitado bastón, pero para subir hacia Dios no lo necesito",
+             p5: "27 de diciembre"
+           };
+          
+           for (let i = 1; i <= 5; i++) {
+             let r = document.querySelector(`input[name="p${i}"]:checked`);
+             if (r) {
+               if (r.value === respuestas[`p${i}`]) {
+                 puntaje++;
+                 salida += `${i}. ✅ Correcta<br>`;
+               } else {
+                 salida += `${i}. ❌ Incorrecta. Correcta: ${respuestas[`p${i}`]}<br>`;
+               }
+             } else {
+               salida += `${i}. ❌ No respondida. Correcta: ${respuestas[`p${i}`]}<br>`;
+             }
+           }
+          
+           salida += `<h4>Puntaje final: ${puntaje} de 5</h4>`;
+           if (puntaje === 5) salida += "🎉 ¡Excelente trabajo! Conoces muy bien al Beato Alfredo Parte.";
+           else if (puntaje >= 3) salida += "😊 Muy bien, sabes bastante sobre su vida y fe.";
+           else salida += "📘 Puedes repasar la historia del Beato Alfredo Parte para aprender más.";
+          
+           document.getElementById("resultado").innerHTML = salida;
+          });
+</script>
 </body>
 </html>
